@@ -6,10 +6,7 @@
 > Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
 ## News
-- **[2025/6/10]** Code Release
-- **[2025/8/20]** Paper released on [arXiv](https://arxiv.org/abs/2311.12755).
-- **[2025/10/26]** UnsOcc is accepted to CoRL 2025!
-- **[2025/11/20]** Demo release.
+- **[2025/5/10]** UnScenes3D Dataset Release
 
 ## Demo
 
@@ -64,64 +61,15 @@ Dataset/
 
 ## Results
 # Occupancy baseline
-<img src=./assets/occ_uns.png>
+<img src=./assets/occ_nus.png>
 
 # Depth baseline
 <img src=./assets/depth_nus.png>
 
-## Getting Started
 
-### Installation
-
-Follow detailed instructions in [Installation](docs/installation.md).
-
-### Preparing Dataset
-
-Follow detailed instructions in [Prepare Dataset](docs/prepare_data.md).
-
-
-### Run
-
-#### 3D Occupancy Prediction
-
-Download model weights [HERE](https://cloud.tsinghua.edu.cn/f/831c104c82a244e9878a/) and put it under out/nuscenes/occ/
-```bash
-# train
-python train.py --py-config config/nuscenes/nuscenes_occ.py --work-dir out/nuscenes/occ_train --depth-metric
-# eval
-python eval_iou.py --py-config config/nuscenes/nuscenes_occ.py --work-dir out/nuscenes/occ --resume-from out/nuscenes/occ/model_state_dict.pth --occ3d --resolution 0.4 --sem --use-mask --scene-size 4
-```
-
-#### Novel Depth Synthesis
-
-
-Download model weights [HERE](https://github.com/ruiqi-song) and put it under out/nuscenes/novel_depth/
-```bash
-# train
-python train.py --py-config config/nuscenes/nuscenes_novel_depth.py --work-dir out/nuscenes/novel_depth_train --depth-metric
-# evak
-python eval_novel_depth.py --py-config config/nuscenes/nuscenes_novel_depth.py --work-dir out/nuscenes/novel_depth --resume-from out/nuscenes/novel_depth/model_state_dict.pth
-```
 
 ### Visualization
 
 Follow detailed instructions in [Visualization](docs/visualization.md).
 
-## Related Projects
 
-
-Also thanks to these excellent open-sourced repos:
-[Co-Occ](https://github.com/Rorisis/Co-Occ/pulls) 
-
-
-## Citation
-
-If you find this project helpful, please consider citing the following paper:
-```
-@article{wu2025uns,
-    title={UnsOcc: 3D Semantic Occupancy Prediction in Unstructured Scene via Rendering Fusion},
-    author={Wu, Ye and Song, Ruiqi and Ding, Baiyong and Zeng, Nanxin and Li, Xinqing and Ai, Yunfeng },
-    journal={arXiv preprint arXiv:2311.1275},
-    year={2025}
-}
-```
