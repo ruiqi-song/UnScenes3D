@@ -1,5 +1,7 @@
 # Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
-### [Paper](https://arxiv.org/pdf/2311.12754)  | [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
+[Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
+## Abstract
+- we investigate unstructured scene understanding through 3D semantic occupancy prediction, which is used to detect irregular obstacles in unstructured scenes, and road surface elevation reconstruction, which characterizes the bumpy and uneven conditions of road surfaces. The dataset provides detailed annotations for 3D semantic occupancy prediction and road surface elevation reconstruction, offering a comprehensive representation of unstructured scenes. In addition, trajectory and speed planning information is provided to explore the relationship between perception and planning in unstructured scenes. Natural language descriptions of scenes are also provided to explore the interpretability of autonomous driving decision-making.
 
 ## Overview
 <p align="center">
@@ -12,12 +14,6 @@
 - **[2025/5/10]** UnScenes3D Dataset Release
 
 ## Demo
-
-### Trained using only video sequences and poses:
-
-<p align="center">
-<img src=./assets/demo.gif.png>
-</p>
 
 ## Data Pipeline
 <p align="center">
