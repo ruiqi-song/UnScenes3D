@@ -1,7 +1,8 @@
 # Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 ### [Paper](https://arxiv.org/pdf/2311.12754)  | [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
-![demo](./assets/overview.png)
+![demo]
+<img src=./assets/overview.png alt="Description" width="400"/>
 
 > Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
