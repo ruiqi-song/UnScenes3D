@@ -74,11 +74,6 @@ Dataset/
 <img src=./assets/depth_nus.png>
 
 
-
-### Visualization
-
-Follow detailed instructions in [Visualization](docs/visualization.md).
-
 ## Acknowledgement
 
 Many thanks to these excellent open source projects:
