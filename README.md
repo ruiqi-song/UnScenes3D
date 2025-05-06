@@ -1,8 +1,8 @@
 # Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 ### [Paper](https://arxiv.org/pdf/2311.12754)  | [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
-![demo]
-<img src=./assets/overview.png alt="Description" width="400"/>
+## Overview
+<img src=./assets/overview.png alt="Description" width="600"/>
 
 > Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
@@ -15,7 +15,7 @@
 
 ![demo](./assets/demo.gif)
 
-## Overview
+## Data Pipeline
 ![overview](./assets/framework.png)
 
 - We propose a novel 3D semantic occupancy prediction framework that improves the robustness of prediction in unstructured scenes. Bidirectional supervision for cross-modal feature alignment mechanism and detail-aware 3D Gaussian Splatting auxiliary supervision mechanism are proposed to enhance the capability of cross-modal fusion and long-tailed class prediction in unstructured scene, respectively
