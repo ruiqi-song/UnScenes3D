@@ -15,10 +15,14 @@
 
 ### Trained using only video sequences and poses:
 
-![demo](./assets/demo.gif)
+<p align="center">
+<img src=./assets/demo.gif.png>
+</p>
 
 ## Data Pipeline
-![overview](./assets/framework.png)
+<p align="center">
+<img src=./assets/framework.png alt="Description" width="600"/>
+</p>
 
 - We propose a novel 3D semantic occupancy prediction framework that improves the robustness of prediction in unstructured scenes. Bidirectional supervision for cross-modal feature alignment mechanism and detail-aware 3D Gaussian Splatting auxiliary supervision mechanism are proposed to enhance the capability of cross-modal fusion and long-tailed class prediction in unstructured scene, respectively
 
