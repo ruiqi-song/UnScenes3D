@@ -49,7 +49,24 @@ Dataset/
 ## Dataset Stastic
 <img src=./assets/stastic.png>
 
+## Tools
+
+### Processing
+
+- generate depth label from localmap_clouds by [this](tools/processing/gengert_depth_label.py). 
+- generate elevation label from localmap_clouds by [this](tools/processing/gengert_elevation_label.py).
+
+### Visualization
+
+- [visualize 3D semantic occupancy label.](tools/visualization/occ_visual.py)
+
 ## Technical Validation
+### Tasks
+
+1. [Restructure the data into the SemanticKITTI dataset structure](tools/tasks/occ_prediction.py) for 3D semantic occupancy prediction task, which is compatible with the data format required by the [OccFormer](https://github.com/zhangyp15/OccFormer) project.
+2. [Restructure the data](tools/tasks/depth_elevation_estimation.py) for depth estimation task and road surface elevation reconstruction task, which is compatible with the data format required by the [mmdepth](https://github.com/RuijieZhu94/mmdepth) project.
+
+
 ### 3D Semantic Occupancy Prediction
 <img src=./assets/occ_nus.png>
 
@@ -61,5 +78,13 @@ Dataset/
 ### Visualization
 
 Follow detailed instructions in [Visualization](docs/visualization.md).
+
+## Acknowledgement
+
+Many thanks to these excellent open source projects:
+
+- [OccFormer](https://github.com/zhangyp15/OccFormer)
+- [SurroundOcc](https://github.com/weiyithu/SurroundOcc)
+- [mmdepth](https://github.com/RuijieZhu94/mmdepth)
 
 
