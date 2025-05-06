@@ -5,19 +5,6 @@
 
 > Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
-> [Ye Wu](https://github.com/ruiqi-song)*, 
-> [Ruiqi Song](https://scholar.google.com/citations?hl=en&user=hMSOTPoAAAAJ&view_op=list_works&sortby=pubdate)\* $\dagger$, 
-> [Baiyong Ding](https://github.com/ruiqi-song), 
-> [Nanxing Zeng](https://github.com/ruiqi-song), 
-> [XinQing Li](https://github.com/ruiqi-song), 
-> [Long Chen](https://scholar.google.com.hk/citations?user=fDZNc60AAAAJ&hl=en)$\ddagger$
-
-\* Equal contribution $\dagger$ Project leader $\ddagger$ Corresponding author
-
-Code Contributors: [Ye Wu](https://github.com/ruiqi-song), 
-                   [Baiyong Ding](https://github.com/ruiqi-song)
-                 
-
 ## News
 - **[2025/6/10]** Code Release
 - **[2025/8/20]** Paper released on [arXiv](https://arxiv.org/abs/2311.12755).
