@@ -10,7 +10,7 @@
 > [Baiyong Ding](https://github.com/ruiqi-song), 
 > [Nanxing Zeng](https://github.com/ruiqi-song), 
 > [XinQing Li](https://github.com/ruiqi-song), 
-> [Yunfeng Ai](https://scholar.google.com.hk/citations?user=fDZNc60AAAAJ&hl=en)$\ddagger$
+> [Long Chen](https://scholar.google.com.hk/citations?user=fDZNc60AAAAJ&hl=en)$\ddagger$
 
 \* Equal contribution $\dagger$ Project leader $\ddagger$ Corresponding author
 
