@@ -2,27 +2,21 @@
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
 ## Overview
-> we investigate unstructured scene understanding through 3D semantic occupancy prediction, which is used to detect irregular obstacles in unstructured scenes, and road surface elevation reconstruction, which characterizes the bumpy and uneven conditions of road surfaces. The dataset provides detailed annotations for 3D semantic occupancy prediction and road surface elevation reconstruction, offering a comprehensive representation of unstructured scenes. In addition, trajectory and speed planning information is provided to explore the relationship between perception and planning in unstructured scenes. Natural language descriptions of scenes are also provided to explore the interpretability of autonomous driving decision-making.
-
 <p align="center">
 <img src=./assets/overview.png alt="Description" width="600"/>
 </p>
 
-> Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
+> we investigate unstructured scene understanding through 3D semantic occupancy prediction, which is used to detect irregular obstacles in unstructured scenes, and road surface elevation reconstruction, which characterizes the bumpy and uneven conditions of road surfaces. The dataset provides detailed annotations for 3D semantic occupancy prediction and road surface elevation reconstruction, offering a comprehensive representation of unstructured scenes. In addition, trajectory and speed planning information is provided to explore the relationship between perception and planning in unstructured scenes. Natural language descriptions of scenes are also provided to explore the interpretability of autonomous driving decision-making.
 
 ## News
-- **[2025/5/10]** UnScenes3D Dataset Release
-
-## Demo
+- **[2025/5/10]** UnScenes3D Dataset v1.0 Released
 
 ## Data Pipeline
 <p align="center">
 <img src=./assets/framework.png alt="Description" width="600"/>
 </p>
 
-- We propose a novel 3D semantic occupancy prediction framework that improves the robustness of prediction in unstructured scenes. Bidirectional supervision for cross-modal feature alignment mechanism and detail-aware 3D Gaussian Splatting auxiliary supervision mechanism are proposed to enhance the capability of cross-modal fusion and long-tailed class prediction in unstructured scene, respectively
-
-- Our UnsOcc outperforms the newest and best method L2Occ by 58.7% on UnScenes3D and is the first 3D semantic occupancy prediction work in unstructured scenes.
+> Dataset construction framework and future outlook: (a) Data processing. (b) Data label visualization. (c) Scene text description. (d) Future work outlook.
 
 ## Dataset organization
 ```
@@ -55,11 +49,11 @@ Dataset/
 ## Dataset Stastic
 <img src=./assets/stastic.png>
 
-## Results
-# Occupancy baseline
+## Technical Validation
+### 3D Semantic Occupancy Prediction
 <img src=./assets/occ_nus.png>
 
-# Depth baseline
+### Road Elevation Reconstruction
 <img src=./assets/depth_nus.png>
 
 
