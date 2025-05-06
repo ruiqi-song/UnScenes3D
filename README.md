@@ -41,8 +41,10 @@ Dataset/
 │   ├── val.txt
 │   └── test.txt
 ├── localmap_clouds/         # Dense point cloud map of local environment
-├── vehicle_infos/           # Ego vehicle's pose, speed, and acceleration data
+├── vehicle_infos/           # Ego vehicle's pose, speed, and acceleration information
 └── image_caption/           # Language-based scene descriptions
+
+
 
 #Description of Each Directory
 calibs/: Contains intrinsic and extrinsic calibration files for sensors (camera, LiDAR, etc.).
