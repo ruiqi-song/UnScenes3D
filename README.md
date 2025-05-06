@@ -1,9 +1,9 @@
-# UnsOcc: 3D Semantic Occupancy Prediction in Unstructured Scene via Rendering Fusion
+# Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 ### [Paper](https://arxiv.org/pdf/2311.12754)  | [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
 ![demo](./assets/overview.png)
 
-> UnsOcc: 3D Semantic Occupancy Prediction in Unstructured Scene via Rendering Fusion
+> Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
 > [Ye Wu](https://github.com/ruiqi-song)*, 
 > [Ruiqi Song](https://scholar.google.com/citations?hl=en&user=hMSOTPoAAAAJ&view_op=list_works&sortby=pubdate)\* $\dagger$, 
@@ -37,8 +37,35 @@ Code Contributors: [Ye Wu](https://github.com/ruiqi-song),
 
 - Our UnsOcc outperforms the newest and best method L2Occ by 58.7% on UnScenes3D and is the first 3D semantic occupancy prediction work in unstructured scenes.
 
+## Dataset organization
+├── Dataset
+│   ├── calibs                    %calibration information
+│   ├── images                    %synchronized frame image data
+│   │   ├──1689903584.278848.jpg  
+│   │   ├──...
+│   ├── clouds                    %HAP synchronized frame point cloud data
+│   │   ├──1689903584.278848.bin
+│   │   ├──...
+│   ├── occ                       %3d semantic occupancy prediction labels 
+│   ├── elevation                 %road elevation labels
+│   ├── depths                    %depth labels
+│   ├── imagesets                 %training, validation, and test set
+│   │   ├──train.txt
+│   │   ├──val.txt
+│   │   ├──test.txt
+│   ├── localmap_clouds           %dense point cloud map 
+│   ├── vehicle_infos             %ego poses, speed, acceleration information
+│   └── image_caption             %language description
+
+## Dataset Stastic
+<img src=./assets/stastic.png>
+
 ## Results
+# Occupancy baseline
 <img src=./assets/occ_uns.png>
+
+# Depth baseline
+<img src=./assets/depth_nus.png>
 
 ## Getting Started
 
