@@ -48,16 +48,16 @@ Dataset/
 
 
 #Description of Each Directory
-calibs/: Contains intrinsic and extrinsic calibration files for sensors (camera, LiDAR, etc.).
-images/: RGB camera images with precise timestamps.
-clouds/: LiDAR point clouds aligned with the images based on timestamp.
-occ/: Ground truth labels for 3D semantic occupancy prediction.
-elevation/: Road elevation information, useful for terrain-aware planning.
-depths/: Dense or sparse depth maps, typically aligned with image views.
-imagesets/: Defines the data splits for training, validation, and testing.
-localmap_clouds/: High-density point cloud maps used for global localization or mapping.
-vehicle_infos/: Ego-vehicle motion states including poses, velocities, and accelerations.
-image_caption/: Textual language descriptions for each frame, supporting vision-language tasks.
+- calibs/: Contains intrinsic and extrinsic calibration files for sensors (camera, LiDAR, etc.).
+- images/: RGB camera images with precise timestamps.
+- clouds/: LiDAR point clouds aligned with the images based on timestamp.
+- occ/: Ground truth labels for 3D semantic occupancy prediction.
+- elevation/: Road elevation information, useful for terrain-aware planning.
+- depths/: Dense or sparse depth maps, typically aligned with image views.
+- imagesets/: Defines the data splits for training, validation, and testing.
+- localmap_clouds/: High-density point cloud maps used for global localization or mapping.
+- vehicle_infos/: Ego-vehicle motion states including poses, velocities, and accelerations.
+- image_caption/: Textual language descriptions for each frame, supporting vision-language tasks.
 
 ## Dataset Stastic
 <img src=./assets/stastic.png>
