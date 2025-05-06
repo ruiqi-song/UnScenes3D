@@ -2,7 +2,9 @@
 ### [Paper](https://arxiv.org/pdf/2311.12754)  | [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
 ## Overview
+<p align="center">
 <img src=./assets/overview.png alt="Description" width="600"/>
+</p>
 
 > Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 
