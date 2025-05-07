@@ -78,8 +78,13 @@ Dataset/
 
 Many thanks to these excellent open source projects:
 
+- [MonoScene](https://github.com/astra-vision/MonoScene)
+- [TPVFormer](https://github.com/wzzheng/TPVFormer)
 - [OccFormer](https://github.com/zhangyp15/OccFormer)
 - [SurroundOcc](https://github.com/weiyithu/SurroundOcc)
+- [CGFormer](https://github.com/pkqbajng/CGFormer)
+- [Co-Occ](https://github.com/Rorisis/Co-Occ)
+- [L2COcc](https://github.com/StudyingFuFu/L2COcc)
 - [mmdepth](https://github.com/RuijieZhu94/mmdepth)
 
 
