@@ -2,12 +2,10 @@
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
 <h2 align="center">🧑‍💻 Project Members</h2>
-
 <p align="center">
-<a href="#"><img src="https://img.shields.io/badge/Ruiqi%20Song-宋瑞琦-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Baiyong%20Ding-丁佰勇-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/></a>
+  <a href="https://ruiqi-song.github.io/"><img src="https://img.shields.io/badge/Ruiqi%20Song-宋睿奇-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/></a>
+  <a href="https://scholar.google.com/citations?user=5tRShW8AAAAJ&hl=en"><img src="https://img.shields.io/badge/Baiyong%20Ding-丁百勇-607d8b?style=flat-square&logo=google-scholar&logoColor=white" height="25px"/></a>
 </p>
-
 
 <p align="center">
   <img src=./assets/road_rec_01.gif width="48%" style="display: inline-block; margin-right: 2%;" />
