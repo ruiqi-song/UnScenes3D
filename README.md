@@ -1,6 +1,11 @@
 # Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
+<p align="center">
+  <img src="https://github.com/ruiqi-song/UnScenes3D/tree/main/assets/road_rec_01.gif" width="45%" style="display: inline-block; margin-right: 2%;" />
+  <img src="https://github.com/ruiqi-song/UnScenes3D/tree/main/assets/road_rec_02.gif" width="45%" style="display: inline-block;" />
+</p>
+
 ## Overview
 <p align="center">
 <img src=./assets/overview.png alt="Description" width="600"/>
