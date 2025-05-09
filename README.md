@@ -4,10 +4,10 @@
 <h2 align="center">🧑‍💻 Project Members</h2>
 <p align="center">
   <a href="https://github.com/ruiqi-song">
-    <img src="https://img.shields.io/badge/Ruiqi%20Song-项目负责人-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/>
+    <img src="https://img.shields.io/badge/Ruiqi%20Song-Project-Leader-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/>
   </a>
   <a href="https://github.com/knightdby">
-    <img src="https://img.shields.io/badge/Baiyong%20Ding-核心成员-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>
+    <img src="https://img.shields.io/badge/Baiyong%20Ding-Core-Member-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>
   </a>
 </p>
 
@@ -102,5 +102,18 @@ Many thanks to these excellent open source projects:
 - [Co-Occ](https://github.com/Rorisis/Co-Occ)
 - [L2COcc](https://github.com/StudyingFuFu/L2COcc)
 - [mmdepth](https://github.com/RuijieZhu94/mmdepth)
+
+
+<h2 align="center">🤝 Collaborators</h2>
+
+<p align="center">
+Proud to collaborate with:
+</p>
+
+<p align="center">
+  <a href="https://www.ia.cas.cn/"><img src="https://img.shields.io/badge/CASIA-中国科学院自动化所-blue?style=flat-square&logo=government&logoColor=white" height="25px"/></a>
+  <a href="https://www.tongji.edu.cn/"><img src="https://img.shields.io/badge/Tongji%20University-同济大学-005eff?style=flat-square&logo=academia&logoColor=white" height="25px"/></a>
+  <a href="https://www.waytous.cn/"><img src="https://img.shields.io/badge/Waytous-智能矿山公司-ff9800?style=flat-square&logo=briefcase&logoColor=white" height="25px"/></a>
+</p>
 
 
