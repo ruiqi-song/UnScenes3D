@@ -1,5 +1,11 @@
-# Unstructured Scene Understanding: Scene as Occupancy and Reconstruction
+# Unstructured Scene Understanding
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
+<h2 align="center">🧑‍💻 Project Members</h2>
+<p align="center">
+  <a href="https://github.com/knightdby">
+    <img src="https://img.shields.io/badge/Scene%20as%20Occupancy%20and%20Reconstruction-Core%20Member-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>
+  </a>
+</p>
 
 [//]: # (<h2 align="center">🧑‍💻 Project Members</h2>)
 
