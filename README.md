@@ -1,4 +1,4 @@
-# Scene as Occupancy and Reconstruction: A Comprehensive Dataset for Unstructured Scene Understanding
+# Unstructured Scene Understanding: Scene as Occupancy and Reconstruction
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
 
 [//]: # (<h2 align="center">🧑‍💻 Project Members</h2>)
