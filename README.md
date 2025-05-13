@@ -1,8 +1,8 @@
 # <h1 align="center"> UnScenes3D: Unstructured Scene Understanding
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive) 
-<h3 align="center">Scene as Occupancy and Reconstruction</h2>
 
 
+<h2 align="center">🧑‍💻 Project Members</h2>
 <p align="center">
   <a href="https://github.com/knightdby">
     <img src="https://img.shields.io/badge/Baiyong%20Ding-Core%20Member-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>
@@ -17,7 +17,8 @@
   <img src=./assets/road_rec_01.gif width="48%" style="display: inline-block; margin-right: 2%;" />
   <img src=./assets/road_rec_02.gif width="48%" style="display: inline-block;" />
 </p>
-<h2 align="center">🧑‍💻 Project Members</h2>
+<h3 align="center">Scene as Occupancy and Reconstruction</h3>
+
 
 ## Overview
 <p align="center">
