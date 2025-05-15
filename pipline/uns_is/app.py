@@ -7,8 +7,8 @@ Author: knightdby  && knightdby@163.com
 Date: 2024-03-26 17:39:57
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:03:00
-FilePath: /UnScenes3D/pipline/unsis/app.py
+LastEditTime: 2025-05-15 18:14:10
+FilePath: /UnScenes3D/pipline/uns_is/app.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-05-15 17:11:00
 """
@@ -31,8 +31,8 @@ import gradio as gr
 import numpy as np
 import torch.nn.functional as F
 from detectron2.config import get_cfg
-from pipline.unsis.glee.models.glee_model import GLEE_Model
-from pipline.unsis.glee.config import add_glee_config
+from pipline.uns_is.glee.models.glee_model import GLEE_Model
+from pipline.uns_is.glee.config import add_glee_config
 
 print(f"Is CUDA available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
