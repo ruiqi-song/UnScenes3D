@@ -1,0 +1,12 @@
+"depth": 10
+"min_density": 0.1
+"n_threads": -1
+"downsample": False
+"max_nn": 20
+# "voxel_size": 0.4
+# "pc_range": [0, -40, -4, 100, 40, 10]
+# "occ_size": [250, 200, 35]
+"voxel_size": 0.3
+"pc_range": [0, -38.4, -4, 76.8, 38.4, 5.6]
+"occ_size": [256, 256, 32]
+"self_range": [3.0, 3.0, 3.0]
