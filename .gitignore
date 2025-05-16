@@ -1,6 +1,7 @@
-weights
 __pycache__
 .vscode
 data/unscenes*
 *.pyc
 .ipynb_checkpoints
+*.pth
+*.bin

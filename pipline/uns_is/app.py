@@ -7,7 +7,7 @@ Author: knightdby  && knightdby@163.com
 Date: 2024-03-26 17:39:57
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-16 09:27:28
+LastEditTime: 2025-05-16 14:18:00
 FilePath: /UnScenes3D/pipline/uns_is/app.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-05-15 17:11:00
@@ -191,7 +191,7 @@ cfg_r50 = get_cfg()
 add_glee_config(cfg_r50)
 
 weigths = [
-    'weights/unscene_2d/best_model.pth',
+    'weights/unscene_2d/uns_is_model_weights.pth',
 ]
 conf_files_r50 = osp.dirname(weigths[0])+'/config.yaml'
 cfg_r50.merge_from_file(conf_files_r50)
@@ -207,11 +207,7 @@ GLEEmodel_rawglee_r50 = None
 
 model = GLEE_Model(cfg_r50, None, device, None, True).to(device)
 checkpoints_r50 = torch.load(cfg_r50.MODEL.WEIGHTS)
-glee_state_dict = {}
-for key in checkpoints_r50['model'].keys():
-    if key.startswith('glee.'):
-        glee_state_dict[key[5:]] = checkpoints_r50['model'][key]
-model.load_state_dict(glee_state_dict, strict=False)
+model.load_state_dict(checkpoints_r50, strict=False)
 model.eval()
 
 
