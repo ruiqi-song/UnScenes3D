@@ -7,7 +7,7 @@ Author: knightdby  && knightdby@163.com
 Date: 2024-03-26 17:39:57
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:14:10
+LastEditTime: 2025-05-16 09:27:28
 FilePath: /UnScenes3D/pipline/uns_is/app.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-05-15 17:11:00
@@ -641,33 +641,6 @@ with gr.Blocks(title='UnsIS',
         def segment_image_example(image_path):
             return segment_image(image_path, prompt_mode_select, category_select, custom_category, input_expressiong,
                                  results_select, num_inst_select, base_threshold, instance_threshold, semiseg_threshold, mask_image_mix_ration, model_select, export_result)
-        sence_list = ['SB001', 'YM002', 'SYZP002',
-                      'HR001', 'HS001',
-                      'JD001',
-                      #   'BL001',
-                      'TS001',]
-        name_list = ['tests', 'object_type', 'object_num',
-                     'vehicle', 'person', 'rock',
-                     'cable', 'cable_area',
-                     'rut',  'rut_area',
-                     'puddle', 'slit', 'slit_area',
-                     'warning', 'fence', 'building', ]
-        gr.Markdown("## Examples")
-        for name in name_list:
-            with gr.Column():
-                gr.Markdown(f"**{name.capitalize()}**")
-                with gr.Row():
-                    for sence in sence_list:
-                        examples = get_examples(sence, name)
-                        if len(examples) > 1:
-                            gr.Examples(
-                                examples=examples,
-                                fn=segment_image_example,  # 这里应该是你的处理函数，用于示例
-                                inputs=[img_input],
-                                outputs=[image_segment, results, catption],
-                                examples_per_page=300,
-                                label=sence
-                            )
         with gr.Accordion("Results with COCO", open=False):
             results = gr.JSON(value={})
         image_button.click(segment_image, inputs=[img_input, prompt_mode_select, category_select, custom_category, input_expressiong,

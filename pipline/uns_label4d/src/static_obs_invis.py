@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # coding=utf-8
 """
-brief:
+brief: 
 Version: v0.0.1
 Author: knightdby  && knightdby@163.com
-Date: 2025-04-16 11:55:30
-Description:
+Date: 2025-05-15 18:12:30
+Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:17:38
-FilePath: /UnScenes3D/pipline/uns_label4d/semantic/get_pclabel_rock.py
-Copyright 2025 by Inc, All Rights Reserved.
-2025-04-16 11:55:30
+LastEditTime: 2025-05-16 09:22:40
+FilePath: /UnScenes3D/pipline/uns_label4d/src/static_obs_invis.py
+Copyright 2025 by Inc, All Rights Reserved. 
+2025-05-15 18:12:30
 """
+
 
 import open3d as o3d
 from manifast import *

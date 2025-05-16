@@ -7,15 +7,15 @@ Author: knightdby  && knightdby@163.com
 Date: 2025-04-15 13:43:15
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-03 23:34:45
-FilePath: /UniOcc/uniocc/semantic/get_label_depth.py
+LastEditTime: 2025-05-16 10:32:47
+FilePath: /UnScenes3D/pipline/uns_label4d/get_label_depth.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-04-15 13:43:15
 """
 
 
 from manifast import *
-from pipline.uns_label4d.base.database import Database, cloud_viewer
+from pipline.uns_label4d.base.database import Database
 import imageio
 
 
@@ -46,7 +46,6 @@ class Calibration:
                 except ValueError:
                     pass
         return data
-    # From LiDAR coordinate system to Camera Coordinate system
 
     def lidar2cam(self, pts_3d_lidar):
         n = pts_3d_lidar.shape[0]
@@ -56,7 +55,6 @@ class Calibration:
             np.dot(self.R0, np.transpose(pts_3d_cam_ref)))
         return pts_3d_cam_rec
 
-    # From Camera Coordinate system to Image frame
     def rect2Img(self, rect_pts, img_width, img_height):
         n = rect_pts.shape[0]
         points_hom = np.hstack((rect_pts, np.ones((n, 1))))
@@ -127,7 +125,6 @@ if __name__ == "__main__":
         if not is_build:
             continue
         cloud_map = db.build_static_cloudmap4clip(clip_name)
-        # cloud_viewer(cloud_map)
         for stamp in tqdm(stamps):
             depth_save_path = os.path.join(
                 db.data_dir, f'labels/pc_depth/{stamp}.png')
@@ -151,12 +148,9 @@ if __name__ == "__main__":
                 lidar = np.concatenate(
                     (lidar, lidar_pc), axis=0)
             lidar = lidar[lidar[:, 0] < 80, :]
-            # From LiDAR coordinate system to Camera Coordinate system
             lidar_rect = calib.lidar2cam(lidar[:, 0:3])
-            # From Camera Coordinate system to Image frame
             lidarOnImage, mask = calib.rect2Img(
                 lidar_rect, img.shape[1], img.shape[0])
-            # Concatenate LiDAR position with the intesity (3), with (2) we would have the depth
             lidarOnImagewithDepth = np.concatenate(
                 (lidarOnImage, lidar_rect[mask, 2].reshape(-1, 1)), 1)
             depth_im = dense_map(lidarOnImagewithDepth.T,
@@ -165,11 +159,5 @@ if __name__ == "__main__":
             depth = depth.astype(np.uint16)
             make_path_dirs(depth_save_path)
             imageio.imwrite(depth_save_path, depth)
-            # height = height_im * 256.
-            # height = height.astype(np.uint16)
-            # height_save_path = os.path.join(
-            #     db.data_dir, f'pc_height/{stamp}.png')
-            # make_path_dirs(height_save_path)
-            # imageio.imwrite(height_save_path, height)
-            # break
+
         # break
