@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # coding=utf-8
-'''
-   brief: 
-   Version: v1.0.0
-   Author: Baiyong Ding  && baiyong.ding@waytous.com
-   Date: 2024-11-20 16:44:17
-   Description: 
-   LastEditors: Baiyong Ding
-   LastEditTime: 2024-11-20 16:44:17
-   FilePath: /Uni3DScenes_dev_toolkit_/tools/tasks/occ_prediction.py
-   Copyright 2024  by Inc, All Rights Reserved. 
-   2024-11-20 16:44:17
-'''
+"""
+brief: 
+Version: v0.0.1
+Author: knightdby  && knightdby@163.com
+Date: 2025-05-16 09:33:15
+Description: 
+LastEditors: knightdby
+LastEditTime: 2025-05-16 09:34:29
+FilePath: /UnScenes3D/pipline/uns2kitti/occ_pred.py
+Copyright 2025 by Inc, All Rights Reserved. 
+2025-05-16 09:33:15
+"""
+
 import os
 import json
 from tqdm import tqdm
@@ -27,7 +28,7 @@ class Database:
 
     def _load_timestamps(self, sweep):
         clip_info_path = os.path.join(
-            self.data_dir, 'imagesets/sample_sweep_info.json')
+            self.data_dir, 'imagesets/scene_info.json')
         with open(clip_info_path, "r", encoding='utf-8') as f:
             json_data = json.load(f)
         self.clip_info = {}
