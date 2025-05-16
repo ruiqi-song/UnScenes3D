@@ -42,8 +42,10 @@ Please refer to [PIPLINE.md](pipline/PIPLINE.md) for more details.
 
 ## Dataset organization
 
+please download unscenes3d-mini from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases), and put it in a folder named `data`,with the following structure:
+
 ```
-Dataset/
+./data/unscenes3d/
 ├── calibs/                  # Calibration information for sensors
 ├── images/                  # Synchronized frame image data
 │   ├── 1689903584.278848.jpg
@@ -55,9 +57,7 @@ Dataset/
 ├── elevation/               # Road elevation labels
 ├── depths/                  # Depth estimation labels
 ├── imagesets/               # Dataset splits for training, validation, and testing
-│   ├── train.txt
-│   ├── val.txt
-│   └── test.txt
+│   ├── scene_info.json
 ├── localmap_clouds/         # Dense point cloud map of local environment
 ├── vehicle_infos/           # Ego vehicle's pose, speed, and acceleration information
 └── image_caption/           # Language-based scene descriptions
