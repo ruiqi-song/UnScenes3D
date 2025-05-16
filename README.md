@@ -21,7 +21,7 @@
 ## Overview
 
 <p align="center">
-<img src=./assets/overview.png alt="Description" width="600"/>
+<img src=./assets/overview.png alt="Description" width="600" style="background-color: white; padding: 10px;"/>
 </p>
 
 > we investigate unstructured scene understanding through 3D semantic occupancy prediction, which is used to detect irregular obstacles in unstructured scenes, and road surface elevation reconstruction, which characterizes the bumpy and uneven conditions of road surfaces. The dataset provides detailed annotations for 3D semantic occupancy prediction and road surface elevation reconstruction, offering a comprehensive representation of unstructured scenes. In addition, trajectory and speed planning information is provided to explore the relationship between perception and planning in unstructured scenes. Natural language descriptions of scenes are also provided to explore the interpretability of autonomous driving decision-making.
@@ -35,7 +35,7 @@
 Please refer to [PIPLINE.md](pipline/PIPLINE.md) for more details.
 
 <p align="center">
-<img src=./assets/framework.png alt="Description" width="600"/>
+<img src=./assets/framework.png alt="Description" width="600" style="background-color: white; padding: 10px;"/>
 </p>
 
 > Dataset construction framework and future outlook: (a) Data processing. (b) Data label visualization. (c) Scene text description. (d) Future work outlook.
@@ -71,7 +71,7 @@ please download unscenes3d-mini from [Releases](https://github.com/ruiqi-song/Un
 
 ## Dataset Stastic
 
-<img src=./assets/stastic.png>
+<img src=./assets/stastic.png style="background-color: white; padding: 10px;">
 
 ## Technical Validation
 
