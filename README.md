@@ -32,17 +32,17 @@
 
 ## Data Pipeline
 
-Please refer to [PIPLINE.md](pipline/PIPLINE.md) for more details.
-
 <p align="center">
 <img src=./assets/framework.png alt="Description" width="600" style="background-color: white; padding: 10px;"/>
 </p>
 
 > Dataset construction framework and future outlook: (a) Data processing. (b) Data label visualization. (c) Scene text description. (d) Future work outlook.
 
+Please refer to [PIPLINE.md](docs/PIPLINE.md) for more details.
+
 ## Dataset organization
 
-please download unscenes3d-mini from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases), and put it in a folder named `data`,with the following structure:
+please download unscenes3d-mini（14 scenes） from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases), and put it in a folder named `data`,with the following structure:
 
 ```
 ./data/unscenes3d/
