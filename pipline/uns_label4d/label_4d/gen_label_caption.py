@@ -7,8 +7,8 @@ Author: knightdby  && knightdby@163.com
 Date: 2025-05-15 13:51:53
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:18:04
-FilePath: /UnScenes3D/pipline/uns_label4d/semantic/get_label_caption.py
+LastEditTime: 2025-05-19 17:08:43
+FilePath: /UnScenes3D/pipline/uns_label4d/label_4d/gen_label_caption.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-05-15 13:51:53
 """
@@ -31,7 +31,7 @@ number_mapping = {
 
 if __name__ == "__main__":
 
-    db = Database('/media/knight/disk2knight/htmine_occ',
+    db = Database('./data/raw_data',
                   sweep=False)
 
     for clip_idx in tqdm(range(0, len(db.clip_stamps.keys()), 1)):
@@ -39,9 +39,9 @@ if __name__ == "__main__":
         stamps = db.clip_stamps[clip_name]
         for stamp in stamps:
             image_path = osp.join(
-                db.data_dir, 'samples/images', f'{stamp}.jpg')
+                db.data_dir, clip_name, 'camera_1', f'{stamp}.jpg')
             label_2d_path = osp.join(
-                db.data_dir, 'labels/label_2d', f'{stamp}.json')
+                db.data_dir, clip_name, 'camera_1_label_2d', f'{stamp}.json')
             label_2d = read_json_data(label_2d_path)
             obs_veh_num_left = []
             obs_veh_num_right = []
@@ -53,7 +53,6 @@ if __name__ == "__main__":
                 obs['obj_type'] = obs['obj_type'].lower()
                 x, y, w, h = obs['bbox'][0], obs['bbox'][1], obs['bbox'][2], obs['bbox'][3]
                 area = w*h
-                # and 'front' not in space_caption
                 if obs['obj_type'] in ['road'] and area > min_area:
                     if x > 0.55:
                         space_caption = 'There is free space on the right side of the area.'
@@ -70,7 +69,6 @@ if __name__ == "__main__":
                         obs_veh_num_left.append(obs['obj_type'])
                     else:
                         obs_veh_num_front.append(obs['obj_type'])
-            # 统计obs_num的频次
             if len(obs_veh_num_left) > 0:
                 obs_veh_caption = 'the left side of the area has '
                 for obs in set(obs_veh_num_left):
@@ -95,7 +93,6 @@ if __name__ == "__main__":
                 if len(obs_veh_num_left) > 0:
                     obs_veh_caption = obs_veh_caption[:len(
                         obs_veh_caption) - 2] + '; '
-                    # obs_veh_caption += ' '
                 obs_veh_caption += 'the right side of the area has '
                 for obs in set(obs_veh_num_right):
                     if obs not in ['rut', 'rock', 'slit', 'puddle']:
@@ -117,9 +114,6 @@ if __name__ == "__main__":
                 if len(obs_veh_num_left) > 0 or len(obs_veh_num_right) > 0:
                     obs_veh_caption = obs_veh_caption[:len(
                         obs_veh_caption) - 2] + ', and '
-                # else:
-                    # obs_veh_caption = obs_veh_caption[:len(
-                    #     obs_veh_caption) - 2] + '; '
                 obs_veh_caption += 'the front of the area has '
                 for obs in set(obs_veh_num_front):
                     if obs not in ['rut', 'rock', 'slit', 'puddle']:
@@ -143,14 +137,7 @@ if __name__ == "__main__":
             else:
                 obs_veh_caption = space_caption
             caption_save_path = os.path.join(
-                db.data_dir, f'labels/label_caption/{stamp}.txt')
+                db.data_dir, clip_name, f'label_caption/{stamp}.txt')
             make_path_dirs(caption_save_path)
             with open(caption_save_path, 'w') as f:
                 f.write(obs_veh_caption)
-            # print(obs_veh_caption)
-            # print(caption_save_path)
-        #     break
-        # break
-        # # print(clip, stamp)
-        # caption = db.get_caption_of_stamp(clip, stamp)
-        # db.append(clip=clip, caption=caption, stamp=stamp)

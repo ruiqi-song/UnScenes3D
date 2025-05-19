@@ -71,9 +71,9 @@
 #include <Eigen/Geometry>
 #include <Eigen/Core>
 
-#include "common/cluster_polygon.h"
-#include "common/polyiou.hpp"
-#include "common/octree_connection.hpp"
+#include "cluster_polygon.h"
+#include "polyiou.hpp"
+#include "octree_connection.hpp"
 
 #include <autoware_msgs/DetectedObject.h>
 #include <geometry_msgs/Point32.h>
@@ -674,7 +674,7 @@ void StaticObstacleBuilder::ExtractObject(const pcl::PointCloud<pcl::PointXYZRGB
 void StaticObstacleBuilder::ObsGlobalMerge(autoware_msgs::DetectedObjectArray obs_array)
 {
     std::string stamp_string = std::to_string(obs_array.header.stamp.toSec());
-    std::string obs_save_dir = mSavedir2Harddisk + "/static_obs/"; // 保存路径
+    std::string obs_save_dir = mSavedir2Harddisk + "/label_4d/"; // 保存路径
     if (!boost::filesystem::exists(obs_save_dir.c_str()))
         boost::filesystem::create_directories(obs_save_dir);
     std::string obs_save_path = obs_save_dir + stamp_string + ".json";
@@ -933,7 +933,7 @@ void StaticObstacleBuilder::PointcloudCallback(const sensor_msgs::PointCloud2::C
 {
     OdomCallback(gps_msg);
     Obs2dCallback(obj_msg);
-    nh_.param<std::string>("/local_map_pub/save_dir2hard_disk", mSavedir2Harddisk, "/media/knight/waytous_yimin_bags/depth_work_tmp");
+    nh_.param<std::string>("/local_map_pub/save_dir2hard_disk", mSavedir2Harddisk, "/media/knight/disk2knight/depth_work_tmp");
     mHeader = msg->header;
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr semi_cloud_global(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::fromROSMsg(*msg, *semi_cloud_global);

@@ -1,44 +1,130 @@
 # pipline
 
-The UnScene3D pipeline includes :
+The UnScenes3D pipeline consists of the following components:
 
-1. uns_is — an instance segmentation server built with Gradio;
-2. uns_label4d — scripts for generating 4D labels;
-3. uns_2kitti — a conversion tool that transforms UnScene3D data into KITTI format for model training.
+- uns_is — An instance segmentation server built with Gradio.
+- uns_label4d — A set of scripts for generating 4D labels.
+- uns_2kitti — A data conversion tool that transforms UnScenes3D dataset into KITTI format for model training.
 
-The pipline framework is shown below:
+The pipeline workflow is illustrated below.
 
-<p align="center"><img src=../assets/pipline/pipline.png>
-</p>
+   <p align="center"><img src=../assets/pipline/pipline.png>
+   </p>
 
-## 1. uns_is
+## 0. prepare
 
-1. Install environment following [GLEE INSTALL](https://github.com/FoundationVision/GLEE/blob/main/assets/INSTALL.md);
-2. Download the pre-trained model [here](https://github.com/ruiqi-song/UnScenes3D/releases/download/uns_is/uns_is_model_weights.pth) and put it under `weights/unscene_2d`;
-3. Download the clip_vit_base_patch32 model [here](https://huggingface.co/spaces/Junfeng5/GLEE_demo/resolve/main/GLEE/clip_vit_base_patch32/pytorch_model.bin) and put it under `weights/clip_vit_base_patch32`;
-4. Run the following command to start the server: `python pipline/uns_is/app.py`;
-5. Open the link in the console to start instance segmentation:
+1. Download the UnScenes3D raw data from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases/download/unscenes-mini/unscenes3d-mini_raw.zip) section(unscenes-mini->unscenes3d-mini_raw.zip);
+2. Extract the contents to `./data/raw_data`, ensuring the structure is as follows:
+
+   ```
+   ./data/raw_data/
+   ├── scene_00000
+   │   ├── calib
+   │   ├── camera_1
+   │   ├── ego_pose
+   │   ├── label_3d
+   │   └── lidar_1
+   └── scene_info.json
+   ```
+
+## 1. uns_is – Instance Segmentation Server
+
+1. Set up the environment by following the instructions in [GLEE INSTALL](https://github.com/FoundationVision/GLEE/blob/main/assets/INSTALL.md);
+2. Download the [pre-trained model ](https://github.com/ruiqi-song/UnScenes3D/releases/download/uns_is/uns_is_model_weights.pth) and place it in `weights/unscene_2d`;
+3. Download the [clip_vit_base_patch32 model](https://huggingface.co/spaces/Junfeng5/GLEE_demo/resolve/main/GLEE/clip_vit_base_patch32/pytorch_model.bin) and place it in `weights/clip_vit_base_patch32`;
+4. Launch the segmentation server:
+
+   ```bash
+   python pipline/uns_is/app.py
+   ```
+
+5. Open the link shown in the console to interact with the instance segmentation UI.
 <p align="center"><img src=../assets/pipline/app.png width="600" >
 </p>
 
-## 2. uns_label4d
+## 2. uns_label4d – Label Generation Scripts
 
-1. Run `python pipeline/uns_label4d/gen_odom_fine.py` to fine-tune the odometry using the **KISS-ICP** algorithm.
-2. Generate instance segmentation labels by running:`python pipeline/uns_label4d/gen_label_2d.py`
-3. Generate occupancy labels:
-   - Run `python pipeline/uns_label4d/src/static_obs_builder.py` and `python pipeline/uns_label4d/src/static_obs_invis.py` to generate static obstacles. These scripts rely on instance segmentation labels and the pt2pixel project to calculate static obstacle bounding boxes.
-   - Run `python pipeline/uns_label4d/gen_pc_semantic.py` to generate the semantic point cloud, based on both static and dynamic obstacle bounding boxes.
-   - Run `python pipeline/uns_label4d/gen_pclabel_occ.py` to generate occupancy labels, following the SurroundOcc labeling strategy.
-4. Generate depth labels by running:`python pipeline/uns_label4d/gen_label_depth.py`. This process uses the local map cloud to project depth onto images.
-5. Generate elevation labels by running:
-   `python pipeline/uns_label4d/gen_label_height.py`
-   Similar to depth labeling, this also uses the local map cloud projection.
-6. Generate caption and vehicle information labels:
+1.  Run the following script to refine odometry using **KISS-ICP**:
 
-   - Run `python pipeline/uns_label4d/gen_label_caption.py` to generate caption labels based on instance segmentation.
-   - Run `python pipeline/uns_label4d/gen_label_vehinfo.py` to generate vehicle information labels.
+    ```bash
+    python pipeline/uns_label4d/src/gen_odom_fine.py
+    ```
 
-## 3. uns_2kitti
+2.  Generate 2D instance segmentation labels:
 
-1. convert the data to kitti format by running `python pipline/uns_2kitti/occ_pred.py` for 3D semantic occupancy prediction task, which is compatible with the data format required by the [OccFormer](https://github.com/zhangyp15/OccFormer) project.
-2. convert the data to kitti format by running `python pipline/uns_2kitti/depth_pred.py` for depth estimation task and road surface elevation reconstruction task, which is compatible with the data format required by the [mmdepth](https://github.com/RuijieZhu94/mmdepth) project.
+    ```bash
+    python pipeline/uns_label4d/src/gen_label_2d.py
+    ```
+
+3.  Generate occupancy labels:
+    - Build and run static obstacle generator:
+      ```bash
+      cd pipeline/uns_label4d
+      catkin_make
+      source devel/setup.bash
+      rosrun uns_label4d obs_4d_builder
+      python pipeline/uns_label4d/src/static_obs_builder.py
+      ```
+    - Generate semantic point clouds:
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_pc_semantic.py
+      ```
+    - Generate occupancy labels (SurroundOcc style):
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_pclabel_occ.py
+      ```
+    - Visualize occupancy labels:
+      ```bash
+      python pipline/uns_label4d/utils/visual_occ.py
+      ```
+
+   <p align="center">
+   <img src=../assets/pipline/label_4d.png width="42%" style="display: inline-block; margin-right: 2%;" />
+   <img src=../assets/pipline/occ_label.png width="37%" style="display: inline-block; margin-right: 2%;" />
+
+4.  Generate Depth & Elevation Labels
+
+    - Generate depth labels using local map cloud projection:
+
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_label_depth.py
+      ```
+
+    - Generate elevation (height) labels:
+
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_label_height.py
+      ```
+
+    <p align="center">
+    <img src=../assets/pipline/label_depth.png width="47%" style="display: inline-block; margin-right: 2%;" />
+     <img src=../assets/pipline/label_elevation.png width="31%" style="display: inline-block; margin-right: 2%;" />
+
+5.  Generate Caption & Vehicle Information Labels:
+
+    - Generate caption labels based on instance segmentation:
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_label_caption.py
+      ```
+    - Generate vehicle info labels:
+      ```bash
+      python pipeline/uns_label4d/label_4d/gen_label_vehinfo.py
+      ```
+
+## 3. uns_2kitti – Convert to KITTI Format
+
+1. 3D Semantic Occupancy Prediction
+
+   Convert data into KITTI-compatible format for [OccFormer](https://github.com/zhangyp15/OccFormer) :
+
+   ```bash
+   python pipline/uns_2kitti/occ_pred.py
+   ```
+
+2. Depth Estimation & Elevation Reconstruction
+
+   Convert data into KITTI-compatible format for [mmdepth](https://github.com/RuijieZhu94/mmdepth):
+
+   ```bash
+   python pipline/uns_2kitti/depth_pred.py
+   ```

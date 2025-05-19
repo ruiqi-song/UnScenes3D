@@ -7,8 +7,8 @@ Author: knightdby  && knightdby@163.com
 Date: 2025-03-26 15:31:15
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:16:36
-FilePath: /UnScenes3D/pipline/uns_label4d/semantic/autoanno_2ddetseg.py
+LastEditTime: 2025-05-19 10:16:52
+FilePath: /UnScenes3D/pipline/uns_label4d/src/obs_2d_builder.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-03-26 15:31:15
 """
@@ -125,23 +125,11 @@ null_num = 0
 
 
 def run_function(images_files):
-    global file_num
-    global null_num
-    # if len(images_files) < (file_num+10):
-    #     print('waiting new data to infer...')
-    #     time.sleep(60*10)
-    #     null_num += 1
-    #     if null_num > 5:
-    #         sys.exit(0)
-    #     return
-    # else:
-    #     null_num = 0
-    #     file_num = len(images_files)
     for img_path in tqdm(images_files):
         label_2d_path = img_path.replace(
-            'images', '../labels/label_2d').replace('.jpg', '.json')
-        seg_mask_path = label_2d_path.replace(
-            'label_2d', 'label_2d_vis_2').replace('.json', '.png')
+            'camera_1', 'camera_1_label_2d').replace('.jpg', '.json')
+        seg_mask_path = img_path.replace(
+            'camera_1', 'camera_1_label_2d_view').replace('.json', '.png')
         if osp.exists(seg_mask_path):
             continue
         make_path_dirs(seg_mask_path)
@@ -193,7 +181,7 @@ def run_function(images_files):
         json_dict = {"version": "4.6.0", "flags": {}, "shapes": [], "imagePath": "", "imageData": None,
                      "imageHeight": 0, "imageWidth": 0}
 
-        json_dict["imagePath"] = '../images/'+osp.basename(img_path)
+        json_dict["imagePath"] = '../camera_1/'+osp.basename(img_path)
         json_dict["imageHeight"] = det_info['image_info']['height']
         json_dict["imageWidth"] = det_info['image_info']['width']
 
@@ -227,8 +215,6 @@ def run_function(images_files):
 
 
 if __name__ == '__main__':
-    dataset_dir = '/media/knight/disk2knight/htmine_occ'
-    samples_img_dir = osp.join(dataset_dir, 'samples/images')
-    # samples_img_dir = osp.join(dataset_dir, 'sweeps/images')
-    images_files = get_files(samples_img_dir)
+    dataset_dir = './data/raw_data'
+    images_files = get_files(dataset_dir, in_line='camera_1')
     run_function(images_files)

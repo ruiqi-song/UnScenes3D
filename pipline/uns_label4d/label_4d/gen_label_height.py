@@ -7,16 +7,15 @@ Author: knightdby  && knightdby@163.com
 Date: 2025-04-15 13:58:54
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-04 09:12:21
-FilePath: /UniOcc/uniocc/semantic/get_label_height.py
+LastEditTime: 2025-05-19 17:09:22
+FilePath: /UnScenes3D/pipline/uns_label4d/label_4d/gen_label_height.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-04-15 13:58:54
 """
 
 
-import torch
 from manifast import *
-from pipline.uns_label4d.base.database import Database, palette, name_to_class_seg, cloud_viewer, cloud_viewer_rgb_id
+from pipline.uns_label4d.base.database import Database
 import imageio
 
 
@@ -144,22 +143,21 @@ def get_gt_elevation(xyz):
 
 if __name__ == "__main__":
 
-    db = Database('/media/knight/disk2knight/htmine_occ',
+    db = Database('./data/raw_data',
                   sweep=True
                   )
-    db_keys = Database('/media/knight/disk2knight/htmine_occ',
+    db_keys = Database('./data/raw_data',
                        )
-    #   sweep=False)
     img = None
 
-    for clip in tqdm(list(db.clip_stamps.keys())[0:]):
-        stamps = db_keys.clip_stamps[clip]
+    for clip_name in tqdm(list(db.clip_stamps.keys())[0:]):
+        stamps = db_keys.clip_stamps[clip_name]
         if len(stamps) < 5:
             continue
         is_build = False
         for stamp in tqdm(stamps):
             depth_save_path = os.path.join(
-                db.data_dir, f'labels/pc_height/{stamp}.png')
+                db.data_dir, clip_name, f'pc_height/{stamp}.png')
             if not osp.exists(depth_save_path):
                 is_build = True
             try:
@@ -170,45 +168,36 @@ if __name__ == "__main__":
                 is_build = True
         if not is_build:
             continue
-        cloud_map = db.build_static_cloudmap4clip(clip)
-        # cloud_viewer(cloud_map)
+        cloud_map = db.build_semantic_map(clip_name)
 
         for stamp in tqdm(stamps):
             height_save_path = os.path.join(
-                db.data_dir, f'labels/pc_height/{stamp}.png')
+                db.data_dir, clip_name, f'pc_height/{stamp}.png')
             if osp.exists(height_save_path):
                 continue
             calib_path = os.path.join(
-                db.data_dir, f'samples/calibs/{stamp}.txt')
-            if not osp.exists(calib_path):
-                calib_path = calib_path.replace('sample', 'sweep')
+                db.data_dir, clip_name, f'calib/{stamp}.txt')
             calib = Calibration(calib_path)
             img = None
             if img is None:
                 img_path = os.path.join(
-                    db.data_dir, f'samples/images/{stamp}.jpg')
-                if not osp.exists(img_path):
-                    img_path = img_path.replace('samples', 'sweeps')
+                    db.data_dir, clip_name, f'camera_1/{stamp}.jpg')
                 img = cv2.imread(img_path)
             lidar = db.transform_pc(
-                cloud_map, np.linalg.inv(db.load_calib(stamp)[0].T_lidar_odom))[:, 0:3]
+                cloud_map, np.linalg.inv(db.load_calib(clip_name, stamp).T_lidar_odom))[:, 0:3]
 
-            lidar_pc = db.load_lidar(stamp)[:, 0:3]
+            lidar_pc = db.load_lidar(clip_name, stamp)[:, 0:3]
 
             if len(lidar_pc) > 0:
                 lidar = np.concatenate(
                     (lidar, lidar_pc), axis=0)
             lidar_rect = calib.lidar2cam(lidar[:, 0:3])
-            # print(lidar.shape, lidar_rect.shape)
-            # print(lidar, lidar_rect)
             _,  mask_inimg = calib.rect2Img(
                 lidar_rect, img.shape[1], img.shape[0])
             mask_roi = (lidar[:, 0] > roi_z[0]) & (lidar[:, 0] < roi_z[1]) & (
                 lidar[:, 1] > roi_x[0]) & (lidar[:, 1] < roi_x[1])
 
             ele_gt, _ = get_gt_elevation(lidar[mask_inimg & mask_roi, :])
-            # 计算大于 0 的最小值
-            # print(ele_gt.max(), ele_gt[ele_gt > 0].min())
             height = ele_gt * 256.
             height = height.astype(np.uint16)
             make_path_dirs(height_save_path)
@@ -217,34 +206,6 @@ if __name__ == "__main__":
             pc_inimg = lidar[mask_inimg, :]
             pc_inimg = pc_inimg.astype(np.float32)
             pc_proj_save_path = os.path.join(
-                db.data_dir, f'labels/pc_inimg/{stamp}.bin')
+                db.data_dir, clip_name, f'pc_inimg/{stamp}.bin')
             make_path_dirs(pc_proj_save_path)
             pc_inimg.tofile(pc_proj_save_path)
-
-            continue
-
-            points = lidar[mask_inimg & mask_roi, :]
-            image = img
-            segmap_rgb_ = img
-            projected_image, pointcloud_rgb, pointcloud_seg_rgb = db.proj_point2image(
-                points, db.load_calib(stamp)[0].T_lidar_camera, db.load_calib(stamp)[0].P2, image, segmap_rgb_, enable_outline=False)
-
-            height_proj_save_path = os.path.join(
-                db.data_dir, f'labels/pc_height_proj/{stamp}.png')
-            make_path_dirs(height_proj_save_path)
-            cv2.imwrite(height_proj_save_path, projected_image)
-
-            colormap = plt.get_cmap('plasma')  # 选择一个 colormap，比如 'plasma'
-            ele_gt[ele_gt > 0] = ele_gt.max()-ele_gt[ele_gt > 0]
-            depth_image_colored = colormap(
-                ele_gt / ele_gt.max())  # 归一化并应用 colormap
-            depth_image_colored = (
-                depth_image_colored[:, :, :3] * 255).astype(np.uint8)
-
-            height_view_save_path = os.path.join(
-                db.data_dir, f'labels/pc_height_view/{stamp}.png')
-            make_path_dirs(height_view_save_path)
-            cv2.imwrite(height_view_save_path, depth_image_colored[:, :, ::-1])
-
-        #     break
-        # break

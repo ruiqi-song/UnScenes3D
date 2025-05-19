@@ -7,8 +7,8 @@ Author: knightdby  && knightdby@163.com
 Date: 2025-04-15 13:43:15
 Description: 
 LastEditors: knightdby
-LastEditTime: 2025-05-16 10:32:47
-FilePath: /UnScenes3D/pipline/uns_label4d/get_label_depth.py
+LastEditTime: 2025-05-19 16:29:31
+FilePath: /UnScenes3D/pipline/uns_label4d/label_4d/gen_label_depth.py
 Copyright 2025 by Inc, All Rights Reserved. 
 2025-04-15 13:43:15
 """
@@ -104,16 +104,15 @@ def dense_map(Pts, n, m, grid):
 
 if __name__ == "__main__":
 
-    db = Database('/media/knight/disk2knight/htmine_occ',
+    db = Database('./data/raw_data',
                   sweep=False)
     img = None
     for clip_name in tqdm(list(db.clip_stamps.keys())[0:]):
         stamps = db.clip_stamps[clip_name]
-        # print(clip_name, stamps[0], stamps[-1])
         is_build = False
         for stamp in tqdm(stamps):
             depth_save_path = os.path.join(
-                db.data_dir, f'labels/pc_depth/{stamp}.png')
+                db.data_dir, clip_name, f'pc_depth/{stamp}.png')
             if not osp.exists(depth_save_path):
                 is_build = True
             try:
@@ -124,26 +123,22 @@ if __name__ == "__main__":
                 is_build = True
         if not is_build:
             continue
-        cloud_map = db.build_static_cloudmap4clip(clip_name)
+        cloud_map = db.build_semantic_map(clip_name)
         for stamp in tqdm(stamps):
             depth_save_path = os.path.join(
-                db.data_dir, f'labels/pc_depth/{stamp}.png')
+                db.data_dir, clip_name, f'pc_depth/{stamp}.png')
             if osp.exists(depth_save_path):
                 continue
             calib_path = os.path.join(
-                db.data_dir, f'samples/calibs/{stamp}.txt')
-            if not osp.exists(calib_path):
-                calib_path = calib_path.replace('samples', 'sweeps')
+                db.data_dir, clip_name, f'calib/{stamp}.txt')
             calib = Calibration(calib_path)
             if img is None:
                 img_path = os.path.join(
-                    db.data_dir, f'samples/images/{stamp}.jpg')
-                if not osp.exists(img_path):
-                    img_path = img_path.replace('samples', 'sweeps')
+                    db.data_dir, clip_name,  f'camera_1/{stamp}.jpg')
                 img = cv2.imread(img_path)
             lidar = db.transform_pc(
-                cloud_map, np.linalg.inv(db.load_calib(stamp)[0].T_lidar_odom))[:, 0:3]
-            lidar_pc = db.load_lidar(stamp)[:, 0:3]
+                cloud_map, np.linalg.inv(db.load_calib(clip_name, stamp).T_lidar_odom))[:, 0:3]
+            lidar_pc = db.load_lidar(clip_name, stamp)[:, 0:3]
             if len(lidar_pc) > 0:
                 lidar = np.concatenate(
                     (lidar, lidar_pc), axis=0)
@@ -159,5 +154,3 @@ if __name__ == "__main__":
             depth = depth.astype(np.uint16)
             make_path_dirs(depth_save_path)
             imageio.imwrite(depth_save_path, depth)
-
-        # break

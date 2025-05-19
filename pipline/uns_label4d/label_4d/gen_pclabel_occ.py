@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 # coding=utf-8
 """
-brief: 
+brief:
 Version: v0.0.1
 Author: knightdby  && knightdby@163.com
 Date: 2025-04-15 10:56:14
-Description: 
+Description:
 LastEditors: knightdby
-LastEditTime: 2025-05-15 18:17:01
-FilePath: /UnScenes3D/pipline/uns_label4d/semantic/get_pclabel_occ.py
-Copyright 2025 by Inc, All Rights Reserved. 
+LastEditTime: 2025-05-19 16:01:07
+FilePath: /UnScenes3D/pipline/uns_label4d/label_4d/gen_pclabel_occ.py
+Copyright 2025 by Inc, All Rights Reserved.
 2025-04-15 10:56:14
 """
 
 
 from manifast import *
-from pipline.uns_label4d.base.database import Database, palette, name_to_class_seg, cloud_viewer, cloud_viewer_rgb_id
+from pipline.uns_label4d.base.database import Database
 import yaml
 import torch
 from mmcv.ops.points_in_boxes import (points_in_boxes_all, points_in_boxes_cpu,
@@ -110,18 +110,11 @@ def preprocess(pcd, config):
     )
 
 
-fail_scenes = ['scene_00071', 'scene_00280', 'scene_00295', 'scene_00297', 'scene_00298', 'scene_00299', 'scene_00301',
-               'scene_00302', 'scene_00303', 'scene_00304', 'scene_00305', 'scene_00306', 'scene_00307', 'scene_00308',
-               'scene_00309', 'scene_00310', 'scene_00311', 'scene_00312', 'scene_00313', 'scene_00314', 'scene_00319',
-               'scene_00331', 'scene_00332', 'scene_00353', 'scene_00286', 'scene_00288', 'scene_00294', 'scene_00325',
-               'scene_00329', 'scene_00330', 'scene_00340', 'scene_00413']
-
-
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parse = ArgumentParser()
     args = parse.parse_args()
-    args.config_path = 'uniocc/base/config.yaml'
+    args.config_path = 'pipline/uns_label4d/base/config.yaml'
     args.with_semantic = True
     # args.whole_scene_to_mesh = True
     # args.to_mesh = False
@@ -134,21 +127,11 @@ if __name__ == '__main__':
     pc_range = config['pc_range']
     occ_size = config['occ_size']
 
-    database_dir = '/media/knight/disk2knight/htmine_occ'
+    database_dir = './data/raw_data'
     db = Database(database_dir,
                   sweep=False)
-    pc_seman_dir = os.path.join(database_dir, 'labels/pc_seman/')
-    pc_bbox_dir = os.path.join(database_dir, 'labels/pc_bbox/')
-
-    # lidar_ego_pose0 = np.load(os.path.join(
-    #     pose_path, 'lidar_ego_pose0.npy'), allow_pickle=True).item()
-    # lidar_calibrated_sensor0 = np.load(os.path.join(
-    #     calib_path, 'lidar_calibrated_sensor0.npy'), allow_pickle=True).item()
-    # print(lidar_ego_pose0, lidar_calibrated_sensor0)
 
     for clip_idx in tqdm(range(0, len(db.clip_stamps.keys()))):
-        # clip_idxs = [clip_idx-1, clip_idx, clip_idx+1]
-        # 多个 Clip 存在问题，仍然采用只使用当前 clip
         clip_idxs = [clip_idx]
         stamps = []
         for cli_id in clip_idxs:
@@ -157,41 +140,32 @@ if __name__ == '__main__':
             clip_ = list(db.clip_stamps.keys())[cli_id]
             stamps.extend(db.clip_stamps[clip_])
         clip_name = list(db.clip_stamps.keys())[clip_idx]
-        if clip_name not in fail_scenes:
-            print("Skip scene: ", clip_name)
-            continue
+        pc_seman_dir = os.path.join(database_dir, clip_name, 'pc_seman/')
+        pc_bbox_dir = os.path.join(database_dir, clip_name, 'pc_bbox/')
         stamps_ = db.clip_stamps[clip_name]
-        if len(stamps_) < 10:
-            continue
+        print(clip_name, stamps_[0], stamps_[-1])
         clip_stamp_min = stamps_[0]
         clip_stamp_max = stamps_[-1]
-        print(clip_name, clip_stamp_min, clip_stamp_max)
         dict_list = []
-        lidar2odom_0 = db.load_calib(stamps[0])[0].T_lidar_odom
+        lidar2odom_0 = db.load_calib(clip_name, stamps[0]).T_lidar_odom
         for stamp in stamps:
             if not osp.exists(os.path.join(pc_seman_dir, f'{stamp}.npy')):
                 continue
             pc0 = np.load(os.path.join(pc_seman_dir, f'{stamp}.npy'))[:, :4]
-            # cloud_viewer(pc0)
             pc_bbox_path = os.path.join(pc_bbox_dir, f'{stamp}.npy')
             if osp.exists(pc_bbox_path):
                 bboxes = np.load(pc_bbox_path)
             else:
                 bboxes = np.array([[0, 0, 0., 0., 0., 1., 1., 1., 0.]])
-            # print(pc_bbox_path, bboxes)
             boxes = bboxes[:, 2:].astype(np.float32)
-            # boxes = boxes
             object_category = bboxes[:, 1].astype(np.uint8)
             boxes_token = bboxes[:, 0]
             locs = boxes[:, 0:3]
             dims = boxes[:, 3:6]
             rots = boxes[:, 6:7]
             boxes[:, 2] -= dims[:, 2] / 2.
-            # print(boxes)
             points_in_boxes = points_in_boxes_cpu(torch.from_numpy(pc0[:, :3][np.newaxis, :, :]),
                                                   torch.from_numpy(boxes[np.newaxis, :]))
-            # print(torch.sum(points_in_boxes.byte()[:, :, 0], dim=1))
-            # print(points_in_boxes.shape)
             object_points_list = []
             j = 0
             while j < points_in_boxes.shape[-1]:
@@ -199,19 +173,6 @@ if __name__ == '__main__':
                 object_points = pc0[object_points_mask]
                 object_points_list.append(object_points)
                 j = j + 1
-            # vis = o3d.visualization.Visualizer()
-            # vis.create_window()
-            # for obs in boxes:
-            #     b = o3d.geometry.OrientedBoundingBox()
-            #     b.center = obs[:3]
-            #     # b.extent = obs[3:6]
-            #     l, w, h, yaw = obs[3:]
-            #     b.extent = [l, w, h]
-            #     # with heading
-            #     R = o3d.geometry.OrientedBoundingBox.get_rotation_matrix_from_xyz(
-            #         (0, 0, yaw))
-            #     b.rotate(R, b.center)
-            #     vis.add_geometry(b)
             moving_mask = torch.ones_like(points_in_boxes)
             points_in_boxes = torch.sum(
                 points_in_boxes * moving_mask, dim=-1).bool()
@@ -225,22 +186,10 @@ if __name__ == '__main__':
             ############################# get static scene segment ##########################
             points_mask = points_mask & oneself_mask
             pc = pc0[points_mask]
-            # point_cloud = o3d.geometry.PointCloud()
-            # point_cloud.points = o3d.utility.Vector3dVector(pc[:, :3])
-            # vis.add_geometry(point_cloud)
-            # # point_cloud = o3d.geometry.PointCloud()
-            # # point_cloud.points = o3d.utility.Vector3dVector(
-            # #     object_points[:, :3])
-            # # vis.add_geometry(point_cloud)
-            # vis.get_render_option().background_color = np.asarray(
-            #     [0, 0, 0])  # you can set the bg color
-            # vis.run()
-            # vis.destroy_window()
             ################## coordinate conversion to the same (first) LiDAR coordinate  ##################
-            lidar2odom_t = db.load_calib(stamp)[0].T_lidar_odom
+            lidar2odom_t = db.load_calib(clip_name, stamp).T_lidar_odom
             pc_odom = db.transform_pc(pc, lidar2odom_t)
             lidar_pc = db.transform_pc(pc_odom, np.linalg.inv(lidar2odom_0))
-            # cloud_viewer(lidar_pc)
             dict = {"object_tokens": boxes_token,
                     "object_points_list": object_points_list,
                     "lidar_pc": lidar_pc,
@@ -252,7 +201,6 @@ if __name__ == '__main__':
         ################## concatenate all static scene segments  ########################
         lidar_pc_list = [dict['lidar_pc'] for dict in dict_list]
         lidar_pc = np.concatenate(lidar_pc_list, axis=0)
-        # cloud_viewer(lidar_pc)
         ################## concatenate all object segments (including non-key frames)  ########################
         object_token_zoo = []
         object_semantic = []
@@ -289,7 +237,6 @@ if __name__ == '__main__':
         for key in object_points_dict.keys():
             point_cloud = object_points_dict[key]
             object_points_vertice.append(point_cloud[:, :3])
-        # cloud_viewer(lidar_pc)
         if args.whole_scene_to_mesh:
             point_cloud_original = o3d.geometry.PointCloud()
             with_normal2 = o3d.geometry.PointCloud()
@@ -303,7 +250,6 @@ if __name__ == '__main__':
             lidar_pc = np.asarray(mesh.vertices, dtype=float)
             lidar_pc = np.concatenate(
                 (lidar_pc, np.ones_like(lidar_pc[:, 0:1])), axis=1)
-            # cloud_viewer(lidar_pc)
         i = -1
 
         pbar = tqdm(total=len(dict_list))
@@ -318,8 +264,6 @@ if __name__ == '__main__':
                 continue
 
             ################## convert the static scene to the target coordinate system ##############
-            # lidar_calibrated_sensor = dict['lidar_calibrated_sensor']
-            # lidar_ego_pose = dict['lidar_ego_pose']
             lidar2odom_t = dict['calib_lidar2odom']
             pc_odom = db.transform_pc(lidar_pc, lidar2odom_0)
             lidar_pc_i = db.transform_pc(pc_odom, np.linalg.inv(lidar2odom_t))
@@ -331,18 +275,10 @@ if __name__ == '__main__':
             locs = gt_bbox_3d[:, 0:3]
             dims = gt_bbox_3d[:, 3:6]
             rots = gt_bbox_3d[:, 6:7]
-            # gt_bbox_3d[:, 2] += dims[:, 2] / 2.
 
             ################## bbox placement ##############
             object_points_list = []
             object_semantic_list = []
-            # vis = o3d.visualization.Visualizer()
-            # vis.create_window()
-            # pc_vis = o3d.geometry.PointCloud()
-            # pc_vis.points = o3d.utility.Vector3dVector(
-            #     dict['lidar_pc'][:, :3])
-            # vis.add_geometry(pc_vis)
-            # print(object_token_zoo, dict['object_tokens'])
             for j, object_token in enumerate(dict['object_tokens']):
                 for k, object_token_in_zoo in enumerate(object_token_zoo):
                     if object_token == object_token_in_zoo and object_token != '0':
@@ -350,10 +286,7 @@ if __name__ == '__main__':
                         Rot = Rotation.from_euler('z', rots[j], degrees=False)
                         rotated_object_points = Rot.apply(points)
                         points = rotated_object_points + locs[j]
-                        # pc_vis = o3d.geometry.PointCloud()
-                        # pc_vis.points = o3d.utility.Vector3dVector(
-                        #     points[:, :3])
-                        # vis.add_geometry(pc_vis)
+
                         if points.shape[0] >= 5:
                             points_in_boxes = points_in_boxes_cpu(torch.from_numpy(points[:, :3][np.newaxis, :, :]),
                                                                   torch.from_numpy(gt_bbox_3d[j:j+1][np.newaxis, :]))
@@ -364,25 +297,7 @@ if __name__ == '__main__':
                             points[:, 0:1]) * object_semantic[k]
                         object_semantic_list.append(np.concatenate(
                             [points[:, :3], semantics], axis=1))
-                        # pc_vis = o3d.geometry.PointCloud()
-                        # pc_vis.points = o3d.utility.Vector3dVector(
-                        #     points[:, :3])
-                        # vis.add_geometry(pc_vis)
-                        # for obs in gt_bbox_3d[j:j+1]:
-                        #     b = o3d.geometry.OrientedBoundingBox()
-                        #     b.center = obs[:3]
-                        #     # b.extent = obs[3:6]
-                        #     l, w, h, yaw = obs[3:]
-                        #     b.extent = [l, w, h]
-                        #     # with heading
-                        #     R = o3d.geometry.OrientedBoundingBox.get_rotation_matrix_from_xyz(
-                        #         (0, 0, yaw))
-                        #     b.rotate(R, b.center)
-                        #     vis.add_geometry(b)
-            # vis.get_render_option().background_color = np.asarray(
-            #     [0, 0, 0])  # you can set the bg color
-            # vis.run()
-            # vis.destroy_window()
+
             try:  # avoid concatenate an empty array
                 temp = np.concatenate(object_points_list)
                 scene_points = np.concatenate([point_cloud, temp])
@@ -392,13 +307,10 @@ if __name__ == '__main__':
             if args.with_semantic:
                 try:
                     temp = np.concatenate(object_semantic_list)
-                    # print('dynamic object cloud: ', temp.shape)
-                    # print(temp)
                     scene_semantic_points = np.concatenate(
                         [point_cloud_with_semantic, temp])
                 except:
                     scene_semantic_points = point_cloud_with_semantic
-            # cloud_viewer(scene_semantic_points)
             point_cloud_range = [0, -38.4, -4, 76.8, 38.4, 5.6]
 
             ################## remain points with a spatial range ##############
@@ -428,9 +340,6 @@ if __name__ == '__main__':
                 & (np.abs(scene_points[:, 1]) < point_cloud_range[4]) \
                 & (scene_points[:, 2] > point_cloud_range[2]) & (scene_points[:, 2] < point_cloud_range[5])
             scene_points = scene_points[mask]
-            # mask = (np.abs(scene_points[:, 0]) < 50.0) & (np.abs(scene_points[:, 1]) < 50.0) \
-            #     & (scene_points[:, 2] > -5.0) & (scene_points[:, 2] < 3.0)
-            # scene_points = scene_points[mask]
 
             ################## convert points to voxels ##############
             pcd_np = scene_points
@@ -454,7 +363,6 @@ if __name__ == '__main__':
             fov_voxels[:, 0] += pc_range[0]
             fov_voxels[:, 1] += pc_range[1]
             fov_voxels[:, 2] += pc_range[2]
-            # np.save(path + 'occupancy_gt{}.npy'.format(i), fov_voxels)
 
             if args.with_semantic:
 
@@ -462,11 +370,6 @@ if __name__ == '__main__':
                 mask = (scene_semantic_points[:, 0] > point_cloud_range[0]) & (scene_semantic_points[:, 0] < point_cloud_range[3])\
                     & (np.abs(scene_semantic_points[:, 1]) < point_cloud_range[4]) \
                     & (scene_semantic_points[:, 2] > point_cloud_range[2]) & (scene_semantic_points[:, 2] < point_cloud_range[5])
-                # mask = (scene_semantic_points[:, 0] > 0.0) & (scene_semantic_points[:, 0] < 100.0)\
-                #     & (np.abs(scene_semantic_points[:, 1]) < 40.0) \
-                #     & (scene_semantic_points[:, 2] > -4.0) & (scene_semantic_points[:, 2] < 10.0)
-                # mask = (np.abs(scene_semantic_points[:, 0]) < 120.0) & (np.abs(scene_semantic_points[:, 1]) < 120.0) \
-                #     & (scene_semantic_points[:, 2] > -15.0) & (scene_semantic_points[:, 2] < 15.0)
                 scene_semantic_points = scene_semantic_points[mask]
 
                 ################## Nearest Neighbor to assign semantics ##############
@@ -493,14 +396,8 @@ if __name__ == '__main__':
                 # print(dense_voxels_with_semantic)
                 stamp = dict['pc_file_name']
                 occ_path = osp.join(
-                    database_dir, f'labels/pc_occ/{stamp}.npy')
+                    database_dir, clip_name, f'pc_occ/{stamp}.npy')
                 make_path_dirs(occ_path)
                 np.save(occ_path,
                         dense_voxels_with_semantic)
-                # visual_occ_htmine(occ_path)
-
-                # cloud_viewer_rgb_id(dense_voxels_with_semantic)
         pbar.close()
-
-        # break
-    # print(config)
