@@ -1,7 +1,11 @@
 __pycache__
 .vscode
 data/unscenes*
+data/raw*
 *.pyc
 .ipynb_checkpoints
 *.pth
 *.bin
+build
+devel
+.catkin_workspace

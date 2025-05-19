@@ -68,6 +68,7 @@ def get_files(dir_path, ext=None):
             files.append(entry.path)
         elif entry.is_dir():
             files.extend(get_files(entry.path, ext))
+    files = sorted(files)
     return files
 
 
@@ -87,7 +88,6 @@ def get_inv_matrix(file, v2c, rect):
         m = np.concatenate((m, np.expand_dims(np.zeros(3), 1)), axis=1)
         rect = np.concatenate(
             (m, np.expand_dims(np.array([0, 0, 0, 1]), 0)), axis=0)
-        # print(velo_to_cam)
         m = np.matmul(rect, velo_to_cam)
         m = np.linalg.inv(m)
         return m
@@ -281,13 +281,15 @@ def draw_nusc_occupancy(
 
 
 def visual_occ_htmine(visual_path, voxel_in=None, cat_save_file='./results/occ_visual.png'):
+    cat_save_file = visual_path.replace(
+        'pc_occ', 'pc_occ_view').replace('.npy', '.png')
     fov_voxels = np.load(visual_path)
     fov_voxels[..., 3][fov_voxels[..., 3] == 0] = 255
     voxel = np.zeros(np.array(occ_size))
     voxel[fov_voxels[:, 0].astype(np.int32), fov_voxels[:, 1].astype(
         np.int32), fov_voxels[:, 2].astype(np.int32)] = fov_voxels[:, 3]
     calib_path = visual_path.replace(
-        'occ', 'calibs').replace('.npy', '.txt')
+        'pc_occ', 'calib').replace('.npy', '.txt')
     matrix = get_inv_matrix(calib_path, "Tr_velo_to_cam", "R0_rect")
     trans = matrix[:3, 3]
     rots = matrix[:3, :3]
@@ -297,7 +299,7 @@ def visual_occ_htmine(visual_path, voxel_in=None, cat_save_file='./results/occ_v
 
     img_canvas = []
     img_path = visual_path.replace(
-        'occ', 'images').replace('.npy', '.jpg')
+        'pc_occ', 'camera_1').replace('.npy', '.jpg')
     cam_img_size = [480*2, 270*2]
     img = Image.open(img_path)
     img = img.resize(cam_img_size, Image.BILINEAR)
@@ -328,9 +330,9 @@ def visual_occ_htmine(visual_path, voxel_in=None, cat_save_file='./results/occ_v
 
 
 if __name__ == '__main__':
-    DATA_DIR = './data'
-    occ_paths = get_files(DATA_DIR+'/occ', '.npy')
-    random.shuffle(occ_paths)
+    DATA_DIR = './data/raw_data/scene_00000'
+    occ_paths = get_files(DATA_DIR+'/pc_occ', '.npy')
+    # random.shuffle(occ_paths)
     for occ_path in tqdm(occ_paths):
         visual_occ_htmine(occ_path)
-        break
+        # break
