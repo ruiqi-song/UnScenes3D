@@ -13,7 +13,7 @@ The pipeline workflow is illustrated below.
 
 ## 0. prepare
 
-1. Download the UnScenes3D raw data from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases/download/unscenes-mini/unscenes3d-mini_raw.zip) section(unscenes-mini->unscenes3d-mini_raw.zip);
+1. Download the UnScenes3D raw data from [Releases](https://github.com/ruiqi-song/UnScenes3D/releases/download/unscenes-mini/raw_data.zip) section(unscenes-mini->raw_data.zip);
 2. Extract the contents to `./data/raw_data`, ensuring the structure is as follows:
 
    ```

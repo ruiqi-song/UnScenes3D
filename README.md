@@ -38,7 +38,7 @@
 
 > Dataset construction framework and future outlook: (a) Data processing. (b) Data label visualization. (c) Scene text description. (d) Future work outlook.
 
-Please refer to [PIPLINE.md](pipline/readme.md) for more details.
+Please refer to [PIPLINE](pipline/readme.md) for more details.
 
 ## Dataset organization
 
