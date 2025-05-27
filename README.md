@@ -83,7 +83,7 @@ please download unscenes3d-mini（14 scenes） from [Releases](https://github.co
 
 ### Road Elevation Reconstruction
 
-<img src=./assets/depth_nus.png>
+<img src=./assets/elev_nus.png>
 
 ## Acknowledgement
 
