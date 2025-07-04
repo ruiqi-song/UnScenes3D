@@ -2,15 +2,23 @@
 
 [Project Page](https://github.com/ruiqi-song/UnScene-AutoDrive)
 
-#<h2 align="center">🧑‍💻 Project Members</h2>
-#<p align="center">
-#  <a href="https://github.com/knightdby">
-#    <img src="https://img.shields.io/badge/Baiyong%20Ding-Core%20Member-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>
-#  </a>
-#  <a href="https://github.com/ruiqi-song">
-#    <img src="https://img.shields.io/badge/Ruiqi%20Song-Project%20Leader-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/>
-#  </a>
-#</p>
+[//]: # (<h2 align="center">🧑‍💻 Project Members</h2>)
+
+[//]: # (<p align="center">)
+
+[//]: # (  <a href="https://github.com/knightdby">)
+
+[//]: # (    <img src="https://img.shields.io/badge/Baiyong%20Ding-Core%20Member-607d8b?style=flat-square&logo=github&logoColor=white" height="25px"/>)
+
+[//]: # (  </a>)
+
+[//]: # (  <a href="https://github.com/ruiqi-song">)
+
+[//]: # (    <img src="https://img.shields.io/badge/Ruiqi%20Song-Project%20Leader-4caf50?style=flat-square&logo=github&logoColor=white" height="25px"/>)
+
+[//]: # (  </a>)
+
+[//]: # (</p>)
 
 <p align="center">
   <img src=./assets/road_rec_01.gif width="48%" style="display: inline-block; margin-right: 2%;" />
